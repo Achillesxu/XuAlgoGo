@@ -16,18 +16,9 @@ func main() {
 	linkedList.AddToHead(1)
 	linkedList.AddToHead(3)
 	linkedList.AddToHead(9)
-	linkedList.DelHead()
-	fmt.Println(linkedList.HeadNode.Property)
 
-	linkedList.AddToEnd(27)
-	lastNode := linkedList.LastNode()
-	fmt.Println(lastNode.Property)
+	linkedList.AddBefore(1, 15)
 
-	linkedList.AddAfter(1, 15)
-	fmt.Println("")
-	linkedList.IterateList()
-	linkedList.DelNodeWithValue(15)
-	fmt.Println("")
 	linkedList.IterateList()
 	fmt.Println(linkedList.LinkedListLen())
 

@@ -118,9 +118,33 @@ func (linkedList *LinkedList) AddAfter(nodeProperty int, property int) {
 	}
 }
 
-// AddBefore method adds a node with nodeProperty after node with Property
+// AddBefore method adds a node with nodeProperty before node with Property
 func (linkedList *LinkedList) AddBefore(nodeProperty int, property int) {
 
+	var addNode = Node{}
+	addNode.Property = property
+	addNode.NextNode = nil
+	var node *Node
+	var beforeNode *Node
+
+	node = linkedList.HeadNode
+	if node != nil {
+		if node.Property == nodeProperty {
+			addNode.NextNode = node
+			linkedList.HeadNode = &addNode
+		} else {
+			for ; node.NextNode != nil; node = node.NextNode {
+				if node.NextNode.Property == nodeProperty {
+					beforeNode = node
+					break
+				}
+			}
+			if beforeNode != nil {
+				addNode.NextNode = beforeNode.NextNode
+				beforeNode.NextNode = &addNode
+			}
+		}
+	}
 }
 
 // DelNodeWithValue method delete node with vale
