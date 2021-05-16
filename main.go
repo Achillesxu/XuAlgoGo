@@ -5,22 +5,22 @@
 package main
 
 import (
-	"fmt"
-	lds "github.com/Achillesxu/XuAlgoGo/linear_data_structure"
+	nlds "github.com/Achillesxu/XuAlgoGo/non_linear_data_structure"
 )
 
 // main project entrance
 func main() {
-	var linkedList lds.LinkedList
-	linkedList = lds.LinkedList{}
-	linkedList.AddToHead(1)
-	linkedList.AddToHead(3)
-	linkedList.AddToHead(9)
+	var tree = &nlds.BinarySearchTree{}
+	tree.InsertElement(8, 8)
+	tree.InsertElement(3, 3)
+	tree.InsertElement(10, 10)
+	tree.InsertElement(1, 1)
+	tree.InsertElement(6, 6)
+	tree.InsertElement(12, 12)
+	tree.InsertElement(9, 9)
 
-	linkedList.AddBefore(1, 15)
+	tree.String()
+	tree.RemoveNode(8)
+	tree.String()
 
-	linkedList.IterateList()
-	fmt.Println(linkedList.LinkedListLen())
-
-	// fmt.Println(linkedList.LinkedListLen())
 }
