@@ -171,6 +171,39 @@ func (linkedList *LinkedList) DelNodeWithValue(p int) {
 	}
 }
 
+// DelNodeWithValue1 method delete node with vale
+func (linkedList *LinkedList) DelNodeWithValue1(p int) {
+	prev, curr := (*Node)(nil), linkedList.HeadNode
+	for curr != nil {
+		next := curr.NextNode
+		if curr.Property == p {
+			if prev != nil {
+				prev.NextNode = next
+			} else {
+				linkedList.HeadNode = next
+			}
+			break
+		} else {
+			prev = curr
+		}
+		curr = next
+	}
+}
+
+// DelNodeWithValueX method delete node if
+func (linkedList *LinkedList) DelNodeWithValueX(p int) {
+	curr := &linkedList.HeadNode
+	for (*curr) != nil {
+		entry := *curr
+		if entry.Property == p {
+			*curr = entry.NextNode
+			break
+		} else {
+			curr = &entry.NextNode
+		}
+	}
+}
+
 // LinkedListLen method delete node with vale
 func (linkedList *LinkedList) LinkedListLen() int {
 	var node *Node

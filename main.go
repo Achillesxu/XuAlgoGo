@@ -5,22 +5,46 @@
 package main
 
 import (
-	nlds "github.com/Achillesxu/XuAlgoGo/non_linear_data_structure"
+	"fmt"
+	lds "github.com/Achillesxu/XuAlgoGo/linear_data_structure"
 )
 
 // main project entrance
 func main() {
-	var tree = &nlds.BinarySearchTree{}
-	tree.InsertElement(8, 8)
-	tree.InsertElement(3, 3)
-	tree.InsertElement(10, 10)
-	tree.InsertElement(1, 1)
-	tree.InsertElement(6, 6)
-	tree.InsertElement(12, 12)
-	tree.InsertElement(9, 9)
+	// var treeNode *nlds.AVLTreeNode
+	// fmt.Println("Tree is empty")
+	// var avlTree []byte
+	// avlTree, _ = json.MarshalIndent(treeNode, "", " ")
+	// fmt.Println(string(avlTree))
+	// fmt.Println("\n Add Tree")
+	//
+	// nlds.InsertNode(&treeNode, nlds.IntegerKey(5))
+	// nlds.InsertNode(&treeNode, nlds.IntegerKey(3))
+	// nlds.InsertNode(&treeNode, nlds.IntegerKey(8))
+	// nlds.InsertNode(&treeNode, nlds.IntegerKey(7))
+	// nlds.InsertNode(&treeNode, nlds.IntegerKey(6))
+	// nlds.InsertNode(&treeNode, nlds.IntegerKey(10))
+	// avlTree, _ = json.MarshalIndent(treeNode, "", " ")
+	// fmt.Println(string(avlTree))
+	//
+	// fmt.Println("\n Delete Tree")
+	// nlds.RemoveNode(&treeNode, nlds.IntegerKey(3))
+	// nlds.RemoveNode(&treeNode, nlds.IntegerKey(7))
+	// avlTree, _ = json.MarshalIndent(treeNode, "", " ")
+	// fmt.Println(string(avlTree))
 
-	tree.String()
-	tree.RemoveNode(8)
-	tree.String()
+	linkedList := lds.LinkedList{}
+	linkedList.AddToHead(1)
+	linkedList.AddToHead(3)
+	linkedList.AddToHead(9)
+	fmt.Println(linkedList.HeadNode.Property)
 
+	linkedList.AddToEnd(27)
+
+	linkedList.AddAfter(1, 15)
+	fmt.Println("")
+	linkedList.IterateList()
+	linkedList.DelNodeWithValue1(15)
+	fmt.Println("")
+	linkedList.IterateList()
 }
