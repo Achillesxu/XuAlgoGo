@@ -147,7 +147,7 @@ func (linkedList *LinkedList) AddBefore(nodeProperty int, property int) {
 	}
 }
 
-// DelNodeWithValue method delete node with vale
+// DelNodeWithValue method delete node with value
 func (linkedList *LinkedList) DelNodeWithValue(p int) {
 	var node *Node
 	var targetNode *Node
@@ -171,7 +171,7 @@ func (linkedList *LinkedList) DelNodeWithValue(p int) {
 	}
 }
 
-// DelNodeWithValue1 method delete node with vale
+// DelNodeWithValue1 method delete node with value 教科书
 func (linkedList *LinkedList) DelNodeWithValue1(p int) {
 	prev, curr := (*Node)(nil), linkedList.HeadNode
 	for curr != nil {
@@ -190,7 +190,7 @@ func (linkedList *LinkedList) DelNodeWithValue1(p int) {
 	}
 }
 
-// DelNodeWithValueX method delete node if
+// DelNodeWithValueX method delete node  Linux
 func (linkedList *LinkedList) DelNodeWithValueX(p int) {
 	curr := &linkedList.HeadNode
 	for (*curr) != nil {

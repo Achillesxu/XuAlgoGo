@@ -32,19 +32,27 @@ func main() {
 	// nlds.RemoveNode(&treeNode, nlds.IntegerKey(7))
 	// avlTree, _ = json.MarshalIndent(treeNode, "", " ")
 	// fmt.Println(string(avlTree))
+	a := [10]int{1, 2}
+	fmt.Println(a)
 
 	linkedList := lds.LinkedList{}
 	linkedList.AddToHead(1)
 	linkedList.AddToHead(3)
 	linkedList.AddToHead(9)
 	fmt.Println(linkedList.HeadNode.Property)
-
 	linkedList.AddToEnd(27)
 
 	linkedList.AddAfter(1, 15)
 	fmt.Println("")
 	linkedList.IterateList()
-	linkedList.DelNodeWithValue1(15)
+	linkedList.DelNodeWithValue(15)
 	fmt.Println("")
 	linkedList.IterateList()
+	linkedList.DelNodeWithValue1(1)
+	fmt.Println("")
+	linkedList.IterateList()
+	linkedList.DelNodeWithValueX(27)
+	fmt.Println("")
+	linkedList.IterateList()
+
 }
