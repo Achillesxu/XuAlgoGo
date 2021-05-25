@@ -16,7 +16,7 @@ const (
 
 // main project entrance
 func main() {
-	spiral := hds.PrintSpiral(10)
+	spiral := hds.PrintZigZag(4)
 	fmt.Printf("%v", spiral)
 
 }
