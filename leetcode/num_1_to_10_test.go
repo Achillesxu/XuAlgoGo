@@ -64,36 +64,27 @@ func TestAddTwoNumbers(t *testing.T) {
 	}
 }
 
-var LengthOfLongestSubstringTests = []struct {
-	input string
-	res   int
-}{
-	{"abccbcbb", 3},
-	{"bbbbbc", 2},
-	{"pwwkew", 3},
-	{"", 0},
-}
-
 func TestLengthOfLongestSubstring0(t *testing.T) {
+	var LengthOfLongestSubstringTests = []struct {
+		input string
+		res   int
+	}{
+		{"abccbcbb", 3},
+		{"bbbbbc", 2},
+		{"pwwkew", 3},
+		{"", 0},
+	}
 	req4 := require.New(t)
 	for _, test := range LengthOfLongestSubstringTests {
 		if res := lengthOfLongestSubstring0(test.input); res != test.res {
 			req4.Equal(res, test.res)
 		}
 	}
-}
-
-func TestLengthOfLongestSubstring1(t *testing.T) {
-	req4 := require.New(t)
 	for _, test := range LengthOfLongestSubstringTests {
 		if res := lengthOfLongestSubstring1(test.input); res != test.res {
 			req4.Equal(res, test.res)
 		}
 	}
-}
-
-func TestLengthOfLongestSubstring2(t *testing.T) {
-	req4 := require.New(t)
 	for _, test := range LengthOfLongestSubstringTests {
 		if res := lengthOfLongestSubstring2(test.input); res != test.res {
 			req4.Equal(res, test.res)
@@ -112,10 +103,46 @@ func TestFindMedianSortedArrays(t *testing.T) {
 		{[]int{1, 2}, []int{3, 4}, 2.5},
 		{[]int{}, []int{4, 5, 6}, 5.0},
 		{[]int{4, 5}, []int{}, 4.5},
+		{[]int{1, 2, 3, 4}, []int{2, 4, 5, 6}, 3.5},
 	}
 	req4 := require.New(t)
 	for _, test := range tests {
 		res := findMedianSortedArrays(test.num1, test.num2)
+		req4.Equal(res, test.res)
+	}
+	for _, test := range tests {
+		res := findMedianSortedArrays1(test.num1, test.num2)
+		req4.Equal(res, test.res)
+	}
+}
+
+func TestLongestPalindrome(t *testing.T) {
+	var LongestPalindromeTests = []struct {
+		input string
+		res   string
+	}{
+		{"babad", "bab"},
+		{"cbbd", "bb"},
+		{"a", "a"},
+		{"", ""},
+		{"abcd", "a"},
+		{"abcdcba", "abcdcba"},
+	}
+	req4 := require.New(t)
+	for _, test := range LongestPalindromeTests {
+		res := longestPalindrome(test.input)
+		req4.Equal(res, test.res)
+	}
+	for _, test := range LongestPalindromeTests {
+		res := longestPalindrome1(test.input)
+		req4.Equal(res, test.res)
+	}
+	for _, test := range LongestPalindromeTests {
+		res := longestPalindrome2(test.input)
+		req4.Equal(res, test.res)
+	}
+	for _, test := range LongestPalindromeTests {
+		res := longestPalindrome3(test.input)
 		req4.Equal(res, test.res)
 	}
 }

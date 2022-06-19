@@ -10,6 +10,7 @@ import (
 )
 
 /*
+https://books.halfrost.com/leetcode/ChapterFour/0001~0099/0001.Two-Sum/
 Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 You may assume that each input would have exactly one solution, and you may not use the same element twice.
 Example:
@@ -38,6 +39,8 @@ func towSum(nums []int, target int) []int {
 }
 
 /*
+https://books.halfrost.com/leetcode/ChapterFour/0001~0099/0002.Add-Two-Numbers/
+
 You are given two non-empty linked lists representing two non-negative integers.
 The digits are stored in reverse order and each of their nodes contain a single digit.
 Add the two numbers and return it as a linked list.
@@ -98,6 +101,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 }
 
 /*
+https://books.halfrost.com/leetcode/ChapterFour/0001~0099/0003.Longest-Substring-Without-Repeating-Characters/
 Given a string, find the length of the longest substring without repeating characters.
 Example 1:
 Input: "abcabcbb"
@@ -197,6 +201,7 @@ func lengthOfLongestSubstring2(s string) int {
 }
 
 /*
+https://books.halfrost.com/leetcode/ChapterFour/0001~0099/0004.Median-of-Two-Sorted-Arrays/
 There are two sorted arrays nums1 and nums2 of size m and n respectively.
 Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
 You may assume nums1 and nums2 cannot be both empty.
@@ -278,4 +283,245 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 		midRight = min(nums1[n1Mid], nums2[n2Mid])
 	}
 	return float64(midLeft+midRight) / 2.0
+}
+
+func findMedianSortedArrays1(nums1 []int, nums2 []int) float64 {
+	len1 := len(nums1)
+	len2 := len(nums2)
+	if len1 == 0 && len2 == 0 {
+		return 0
+	}
+
+	numsT := nums1
+	if len1 == 0 {
+		numsT = nums2
+	}
+
+	if len1 == 0 || len2 == 0 {
+		len3 := len(numsT)
+		div, mod := len3/2, len3%2
+		if mod == 0 {
+			return float64(numsT[div-1]+numsT[div]) / 2
+		} else {
+			return float64(numsT[div])
+		}
+
+	} else {
+		// 思路：
+		// 已知nums1和nums2均是有序的，可设计一种切换遍历的机制。
+		// 通过div和mod来判断切换遍历提前结束，并计算中位数。
+		//
+		// 结束遍历的判断条件：
+		// 	遍历次数count 等于 div
+		// 计算中位数：
+		// 	1、mod等于0时，中位数等于当前遍历的数；
+		//	2、mod等于1时，中位数等于(前一个遍历的数+当期遍历的数)/2；
+		//
+		div := (len1 + len2) / 2
+		mod := (len1 + len2) % 2
+		n := 0 // nums1_index
+		m := 0 // nums2_index
+		count := 0
+		pre := 0
+		curr := 0
+
+		for {
+			// 条件1：nums1已经遍历完，但nums2还没有遍历完，numsT切片切换到nums2。
+			// 条件2：nums2已经遍历完，但nums1还没有遍历完，numsT切片切换到nums1。
+			// 条件3：nums1[n]大于等于nums2[n], numsT切片切换到nums2。
+			// 条件4：nums1[n]小于nums2[n], numsT切片切换到nums1。
+			if n >= len1 && m < len2 {
+				numsT = nums2[m:]
+				m++
+			} else if m >= len2 && n < len1 {
+				numsT = nums1[n:]
+				n++
+			} else if nums1[n] >= nums2[m] {
+				numsT = nums2[m:]
+				m++
+			} else if nums1[n] < nums2[m] {
+				numsT = nums1[n:]
+				n++
+			}
+
+			curr = numsT[0] // 取出0号值
+			count++         // 遍历了一次
+			if (count - 1) == div {
+				break
+			}
+			pre = curr
+		}
+
+		// 计算中位数
+		if mod == 0 {
+			return float64(pre+curr) / 2
+		} else {
+			return float64(curr)
+		}
+	}
+}
+
+/*
+https://books.halfrost.com/leetcode/ChapterFour/0001~0099/0005.Longest-Palindromic-Substring/
+Given a string s, return the longest palindromic substring in s
+Example 1:
+Input: "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+Example 2:
+Input: "cbbd"
+Output: "bb"
+Example 3:
+Input: "a"
+Output: "a"
+Example 4:
+Input: "ac"
+Output: "a"
+Constraints:
+1 <= s.length <= 1000
+s contains only lowercase English letters.
+
+给你一个字符串 s，找到 s 中最长的回文子串。
+
+解法一，动态规划。定义 dp[i][j] 表示从字符串第 i 个字符到第 j 个字符这一段子串是否是回文串。
+由回文串的性质可以得知，回文串去掉一头一尾相同的字符以后，剩下的还是回文串。
+所以状态转移方程是 dp[i][j] = (s[i] == s[j]) && ((j-i < 3) || dp[i+1][j-1])，
+注意特殊的情况，j - i == 1 的时候，即只有 2 个字符的情况，只需要判断这 2 个字符是否相同即可。
+j - i == 2 的时候，即只有 3 个字符的情况，只需要判断除去中心以外对称的 2 个字符是否相等。每次循环动态维护保存最长回文串即可。
+时间复杂度 O(n^2)，空间复杂度 O(n^2)。
+
+解法二，中心扩散法。动态规划的方法中，我们将任意起始，终止范围内的字符串都判断了一遍。
+其实没有这个必要，如果不是最长回文串，无需判断并保存结果。
+所以动态规划的方法在空间复杂度上还有优化空间。判断回文有一个核心问题是找到“轴心”。
+如果长度是偶数，那么轴心是中心虚拟的，如果长度是奇数，那么轴心正好是正中心的那个字母。
+中心扩散法的思想是枚举每个轴心的位置。然后做两次假设，假设最长回文串是偶数，
+那么以虚拟中心往 2 边扩散；假设最长回文串是奇数，那么以正中心的字符往 2 边扩散。
+扩散的过程就是对称判断两边字符是否相等的过程。这个方法时间复杂度和动态规划是一样的，
+但是空间复杂度降低了。时间复杂度 O(n^2)，空间复杂度 O(1)。
+
+解法三，滑动窗口。这个写法其实就是中心扩散法变了一个写法。中心扩散是依次枚举每一个轴心。
+滑动窗口的方法稍微优化了一点，有些轴心两边字符不相等，下次就不会枚举这些不可能形成回文子串的轴心了。
+不过这点优化并没有优化时间复杂度，时间复杂度 O(n^2)，空间复杂度 O(1)。
+
+解法四，马拉车算法。这个算法是本题的最优解，也是最复杂的解法。时间复杂度 O(n)，空间复杂度 O(n)。
+中心扩散法有 2 处有重复判断，第一处是每次都往两边扩散，不同中心扩散多次，实际上有很多重复判断的字符，
+能否不重复判断？第二处，中心能否跳跃选择，不是每次都枚举，是否可以利用前一次的信息，跳跃选择下一次的中心？
+马拉车算法针对重复判断的问题做了优化，增加了一个辅助数组，将时间复杂度从 O(n^2) 优化到了 O(n)，
+空间换了时间，空间复杂度增加到 O(n)。
+*/
+
+// 解法一 Manacher's algorithm，时间复杂度 O(n)，空间复杂度 O(n)
+func longestPalindrome(s string) string {
+	if len(s) < 2 {
+		return s
+	}
+	newS := make([]rune, 0)
+	newS = append(newS, '#')
+	for _, c := range s {
+		newS = append(newS, c)
+		newS = append(newS, '#')
+	}
+	// dp[i]:    以预处理字符串下标 i 为中心的回文半径(奇数长度时不包括中心)
+	// maxRight: 通过中心扩散的方式能够扩散的最右边的下标
+	// center:   与 maxRight 对应的中心字符的下标
+	// maxLen:   记录最长回文串的半径
+	// begin:    记录最长回文串在起始串 s 中的起始下标
+	dp, maxRight, center, maxLen, begin := make([]int, len(newS)), 0, 0, 1, 0
+	for i := 0; i < len(newS); i++ {
+		if i < maxRight {
+			// 这一行代码是 Manacher 算法的关键所在
+			dp[i] = min(maxRight-i, dp[2*center-i])
+		}
+		// 中心扩散法更新 dp[i]
+		left, right := i-(1+dp[i]), i+(1+dp[i])
+		for left >= 0 && right < len(newS) && newS[left] == newS[right] {
+			dp[i]++
+			left--
+			right++
+		}
+		// 更新 maxRight，它是遍历过的 i 的 i + dp[i] 的最大者
+		if i+dp[i] > maxRight {
+			maxRight = i + dp[i]
+			center = i
+		}
+		// 记录最长回文子串的长度和相应它在原始字符串中的起点
+		if dp[i] > maxLen {
+			maxLen = dp[i]
+			begin = (i - maxLen) / 2 // 这里要除以 2 因为有我们插入的辅助字符 #
+		}
+	}
+	return s[begin : begin+maxLen]
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+
+// 解法二 滑动窗口，时间复杂度 O(n^2)，空间复杂度 O(1)
+func longestPalindrome1(s string) string {
+	if len(s) == 0 {
+		return ""
+	}
+	left, right, pl, pr := 0, -1, 0, 0
+	for left < len(s) {
+		// 移动到相同字母的最右边（如果有相同字母）
+		for right+1 < len(s) && s[left] == s[right+1] {
+			right++
+		}
+		// 找到回文的边界
+		for left-1 >= 0 && right+1 < len(s) && s[left-1] == s[right+1] {
+			left--
+			right++
+		}
+		if right-left > pr-pl {
+			pl, pr = left, right
+		}
+		// 重置到下一次寻找回文的中心
+		left = (left+right)/2 + 1
+		right = left
+	}
+	return s[pl : pr+1]
+}
+
+// 解法三 中心扩散法，时间复杂度 O(n^2)，空间复杂度 O(1)
+func longestPalindrome2(s string) string {
+	res := ""
+	for i := 0; i < len(s); i++ {
+		res = maxPalindrome(s, i, i, res)
+		res = maxPalindrome(s, i, i+1, res)
+	}
+	return res
+}
+
+func maxPalindrome(s string, i, j int, res string) string {
+	sub := ""
+	for i >= 0 && j < len(s) && s[i] == s[j] {
+		sub = s[i : j+1]
+		i--
+		j++
+	}
+	if len(res) < len(sub) {
+		return sub
+	}
+	return res
+}
+
+// 解法四 DP，时间复杂度 O(n^2)，空间复杂度 O(n^2)
+func longestPalindrome3(s string) string {
+	res, dp := "", make([][]bool, len(s))
+	for i := 0; i < len(s); i++ {
+		dp[i] = make([]bool, len(s))
+	}
+	for i := len(s) - 1; i >= 0; i-- {
+		for j := i; j < len(s); j++ {
+			dp[i][j] = (s[i] == s[j]) && ((j-i < 3) || dp[i+1][j-1])
+			if dp[i][j] && (res == "" || j-i+1 > len(res)) {
+				res = s[i : j+1]
+			}
+		}
+	}
+	return res
 }
