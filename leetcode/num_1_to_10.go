@@ -525,3 +525,45 @@ func longestPalindrome3(s string) string {
 	}
 	return res
 }
+
+/*
+https://books.halfrost.com/leetcode/ChapterFour/0001~0099/0006.ZigZag-Conversion/
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this:
+(you may want to display this pattern in a fixed font for better legibility)
+P   A   H   N
+A P L S I I G
+Y   I   R
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows:
+string convert(string text, int nRows);
+Example 1:
+Input: text = "PAYPALISHIRING", nRows = 3
+Output: "PAHNAPLSIIGYIR"
+Example 2:
+Input: text = "PAYPALISHIRING", nRows = 4
+Output: "PINALSIGYAHRPI"
+Explanation:
+P     I    N
+A   L S  I G
+Y A   H R
+P     I
+Example 3:
+Input: text = "A", nRows = 1
+Output: "A"
+Constraints:
+1 <= text.length <= 100
+s consists of English letters (lower-case and upper-case), ',' and '.'
+1 <= numRows <= 1000
+将一个给定字符串 s 根据给定的行数 numRows ，以从上往下、从左到右进行 Z 字形排列。
+比如输入字符串为 "PAYPALISHIRING" 行数为 3 时，排列如下：
+P   A   H   N
+A P L S I I G
+Y   I   R
+之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如："PAHNAPLSIIGYIR"。
+
+这一题没有什么算法思想，考察的是对程序控制的能力。用 2 个变量保存方向，当垂直输出的行数达到了规定的目标行数以后，需要从下往上转折到第一行，循环中控制好方向ji
+*/
+
+func convert(s string, numRows int) string {
+	return ""
+}
