@@ -11,13 +11,6 @@ import (
 	"time"
 )
 
-// Customer Class
-type Customer struct {
-	CustomerId   int
-	CustomerName string
-	SSN          string
-}
-
 // GetConnection method which returns sql.DB
 func GetConnection() (database *sql.DB, err error) {
 	databaseDriver := "mysql"

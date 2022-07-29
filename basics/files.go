@@ -221,12 +221,7 @@ func UnZipFiles(zipName string) error {
 	return nil
 }
 
-type ZipFile struct {
-	Name string
-	Data []byte
-}
-
-func ZipFiles(zipName string, zFiles []ZipFile) error {
+func ZipFiles(zipName string, zFiles []FileBody) error {
 	zFile, err := os.Create(zipName)
 	if err != nil {
 		return err
