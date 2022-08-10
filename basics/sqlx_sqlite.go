@@ -69,3 +69,57 @@ func InsertPlace(db *sqlx.DB, places []*Place) error {
 	_ = tx.Commit()
 	return nil
 }
+
+func QueryPerson(db *sqlx.DB) ([]*Person, error) {
+	dbFile := "./sqlx.db"
+	db, err := GetSqliteConn(dbFile)
+	if err != nil {
+		return nil, err
+	}
+	var persons []*Person
+	err = db.Select(&persons, "SELECT * FROM person ORDER BY first_name ASC")
+	if err != nil {
+		return nil, err
+	}
+	return persons, nil
+}
+
+func GetPerson(db *sqlx.DB, firstName string) (*Person, error) {
+	var person Person
+	err := db.Get(&person, "SELECT * FROM person WHERE first_name = $1", firstName)
+	if err != nil {
+		return nil, err
+	}
+	return &person, nil
+}
+
+func QueryXPlace(db *sqlx.DB) ([]*Place, error) {
+	var places []*Place
+	rows, err := db.Queryx("SELECT * FROM place")
+	for rows.Next() {
+		place := Place{}
+		err = rows.StructScan(&place)
+		if err != nil {
+			return nil, err
+		}
+		places = append(places, &place)
+	}
+	return places, nil
+}
+
+func NamedQueryPerson(db *sqlx.DB) ([]*Person, error) {
+	var persons []*Person
+	rows, err := db.NamedQuery(`SELECT * FROM person WHERE first_name=:fn`, map[string]interface{}{"fn": "a"})
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		person := Person{}
+		err = rows.StructScan(&person)
+		if err != nil {
+			return nil, err
+		}
+		persons = append(persons, &person)
+	}
+	return persons, nil
+}

@@ -65,9 +65,9 @@ func TestInsertPerson(t *testing.T) {
 
 func TestInsertPlace(t *testing.T) {
 	var testPlaces = []*Place{
-		{Country: "a", City: sql.NullString{"b", true}, TelCode: 1},
-		{Country: "d", City: sql.NullString{"", false}, TelCode: 2},
-		{Country: "g", City: sql.NullString{"", true}, TelCode: 3},
+		{Country: "a", City: sql.NullString{String: "b", Valid: true}, TelCode: 1},
+		{Country: "d", City: sql.NullString{Valid: false}, TelCode: 2},
+		{Country: "g", City: sql.NullString{Valid: true}, TelCode: 3},
 	}
 	dbFile := "./sqlx.db"
 	db, err := GetSqliteConn(dbFile)
@@ -77,5 +77,63 @@ func TestInsertPlace(t *testing.T) {
 	err = InsertPlace(db, testPlaces)
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+func TestQueryPerson(t *testing.T) {
+	dbFile := "./sqlx.db"
+	db, err := GetSqliteConn(dbFile)
+	if err != nil {
+		t.Error(err)
+	}
+	persons, err := QueryPerson(db)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, p := range persons {
+		t.Logf("%#v", p)
+	}
+}
+
+func TestGetPerson(t *testing.T) {
+	dbFile := "./sqlx.db"
+	db, err := GetSqliteConn(dbFile)
+	if err != nil {
+		t.Error(err)
+	}
+	person, err := GetPerson(db, "a")
+	if err != nil {
+		t.Error(err)
+	}
+	t.Logf("%#v", person)
+}
+
+func TestQueryXPlace(t *testing.T) {
+	dbFile := "./sqlx.db"
+	db, err := GetSqliteConn(dbFile)
+	if err != nil {
+		t.Error(err)
+	}
+	places, err := QueryXPlace(db)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, p := range places {
+		t.Logf("%#v", p)
+	}
+}
+
+func TestNamedQueryPerson(t *testing.T) {
+	dbFile := "./sqlx.db"
+	db, err := GetSqliteConn(dbFile)
+	if err != nil {
+		t.Error(err)
+	}
+	persons, err := NamedQueryPerson(db)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, p := range persons {
+		t.Logf("%#v", p)
 	}
 }
