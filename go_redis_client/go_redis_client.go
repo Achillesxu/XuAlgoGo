@@ -4,7 +4,11 @@
 // contact : yuqingxushiyin@gmail.com
 package go_redis_client
 
-import "github.com/go-redis/redis/v8"
+import (
+	"context"
+	"github.com/go-redis/redis/v8"
+	"github.com/pkg/errors"
+)
 
 type RedisClient struct {
 	r *redis.Client
@@ -27,4 +31,28 @@ func NewRedisClient(c *RedisConf) *RedisClient {
 			DB:       c.DB,
 		}),
 	}
+}
+
+func (c *RedisClient) Close() error {
+	return c.r.Close()
+}
+
+func (c *RedisClient) Flush(ctx context.Context) error {
+	return c.r.FlushDB(ctx).Err()
+}
+
+func (c *RedisClient) HyperLogAdd(ctx context.Context, key string, els ...interface{}) (int64, error) {
+	cmd := c.r.PFAdd(ctx, key, els...)
+	if cmd.Err() != nil {
+		return 0, errors.Wrapf(cmd.Err(), "redis.PFAdd %s", key)
+	}
+	return cmd.Val(), nil
+}
+
+func (c *RedisClient) HyperLogCount(ctx context.Context, key string) (int64, error) {
+	cmd := c.r.PFCount(ctx, key)
+	if cmd.Err() != nil {
+		return 0, errors.Wrapf(cmd.Err(), "redis.PFCount %s", key)
+	}
+	return cmd.Val(), nil
 }
