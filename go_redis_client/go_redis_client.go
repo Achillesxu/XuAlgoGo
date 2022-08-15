@@ -41,18 +41,30 @@ func (c *RedisClient) Flush(ctx context.Context) error {
 	return c.r.FlushDB(ctx).Err()
 }
 
-func (c *RedisClient) HyperLogAdd(ctx context.Context, key string, els ...interface{}) (int64, error) {
-	cmd := c.r.PFAdd(ctx, key, els...)
-	if cmd.Err() != nil {
-		return 0, errors.Wrapf(cmd.Err(), "redis.PFAdd %s", key)
+func (c *RedisClient) Set(ctx context.Context, key string, value interface{}) error {
+	return c.r.Set(ctx, key, value, 0).Err()
+}
+
+func (c *RedisClient) Get(ctx context.Context, key string) (string, error) {
+	val, err := c.r.Get(ctx, key).Result()
+	if err != nil {
+		return "", errors.Wrapf(err, "redis.Get %s", key)
 	}
-	return cmd.Val(), nil
+	return val, nil
+}
+
+func (c *RedisClient) HyperLogAdd(ctx context.Context, key string, els ...interface{}) (int64, error) {
+	val, err := c.r.PFAdd(ctx, key, els...).Result()
+	if err != nil {
+		return 0, errors.Wrapf(err, "redis.PFAdd %s", key)
+	}
+	return val, nil
 }
 
 func (c *RedisClient) HyperLogCount(ctx context.Context, key string) (int64, error) {
-	cmd := c.r.PFCount(ctx, key)
-	if cmd.Err() != nil {
-		return 0, errors.Wrapf(cmd.Err(), "redis.PFCount %s", key)
+	val, err := c.r.PFCount(ctx, key).Result()
+	if err != nil {
+		return 0, errors.Wrapf(err, "redis.PFCount %s", key)
 	}
-	return cmd.Val(), nil
+	return val, nil
 }
