@@ -4,14 +4,28 @@
 // contact : yuqingxushiyin@gmail.com
 package validators
 
-type person struct {
-	Name                string `validate:"required,min=4,max=15"`
-	Email               string `validate:"required,email"`
-	Age                 int    `validate:"required,numeric,min=18"`
-	DriverLicenseNumber string `validate:"omitempty,len=12,numeric"`
+import "database/sql"
+
+// User contains user information
+type User struct {
+	FirstName      string  `json:"fname" validate:"required"`
+	LastName       string  `json:"lname" validate:"required"`
+	Age            uint8   `validate:"gte=0,lte=130"`
+	Email          string  `json:"e-mail" validate:"required,email"`
+	FavouriteColor string  `validate:"iscolor"`                // alias for 'hexcolor|rgb|rgba|hsl|hsla'
+	Addresses      []*Addr `validate:"required,dive,required"` // a person can have a home and cottage...
 }
 
-type Article struct {
-	Title string `json:"title"`
-	Body  string `json:"body"`
+// Addr houses a users address information
+type Addr struct {
+	Street string `validate:"required"`
+	City   string `validate:"required"`
+	Planet string `validate:"required"`
+	Phone  string `validate:"required"`
+}
+
+// DbBackedUser User struct
+type DbBackedUser struct {
+	Name sql.NullString `validate:"required,gte=0"`
+	Age  sql.NullInt64  `validate:"required"`
 }
